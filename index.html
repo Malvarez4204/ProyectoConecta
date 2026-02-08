@@ -333,7 +333,7 @@ function closeLogin() {
 // --- ACCESIBILIDAD mejorada final ---
 
 
-let fontScale = 1;
+let fontScale = 1; // tamaño base
 const textElements = document.querySelectorAll(
     'p, h1, h2, h3, h4, h5, h6, li, a, label, span, input, textarea'
 );
@@ -341,7 +341,7 @@ const textElements = document.querySelectorAll(
 // Guardamos el tamaño original de cada elemento
 textElements.forEach(el => {
     const size = parseFloat(window.getComputedStyle(el).fontSize);
-    el.dataset.baseFontSize = size; // guardamos en un atributo data
+    el.dataset.baseFontSize = size; 
 });
 
 // Guardamos tamaño original de botones por separado
@@ -352,9 +352,10 @@ buttonElements.forEach(btn => {
 });
 
 function changeFontSize(n) {
-    fontScale += n * 0.1;
-    if (fontScale < 0.5) fontScale = 0.5;
-    if (fontScale > 2) fontScale = 2;
+    // Limitar para solo 2 pasos arriba y 2 pasos abajo
+    const newScale = fontScale + n * 0.1;
+    if (newScale < 0.8 || newScale > 1.2) return; // no permite más allá del límite
+    fontScale = newScale;
 
     // Escalar textos normales
     textElements.forEach(el => {
@@ -368,7 +369,6 @@ function changeFontSize(n) {
         btn.style.fontSize = (baseSize * fontScale) + 'px';
     });
 }
-
 
 
 function toggleContrast() { document.body.classList.toggle('high-contrast'); }
