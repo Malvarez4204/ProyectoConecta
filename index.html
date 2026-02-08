@@ -332,23 +332,44 @@ function closeLogin() {
 
 // --- ACCESIBILIDAD mejorada final ---
 
+
 let fontScale = 1;
+const textElements = document.querySelectorAll(
+    'p, h1, h2, h3, h4, h5, h6, li, a, label, span, input, textarea'
+);
+
+// Guardamos el tamaño original de cada elemento
+textElements.forEach(el => {
+    const size = parseFloat(window.getComputedStyle(el).fontSize);
+    el.dataset.baseFontSize = size; // guardamos en un atributo data
+});
+
+// Guardamos tamaño original de botones por separado
+const buttonElements = document.querySelectorAll('button');
+buttonElements.forEach(btn => {
+    const size = parseFloat(window.getComputedStyle(btn).fontSize);
+    btn.dataset.baseFontSize = size;
+});
 
 function changeFontSize(n) {
-    fontScale += n * 0.1; // aumenta o disminuye 10%
-    if (fontScale < 0.5) fontScale = 0.5; // límite mínimo
-    if (fontScale > 2) fontScale = 2; // límite máximo
+    fontScale += n * 0.1;
+    if (fontScale < 0.5) fontScale = 0.5;
+    if (fontScale > 2) fontScale = 2;
 
-    // Selecciona todos los elementos de texto
-    const textElements = document.querySelectorAll(
-        'p, h1, h2, h3, h4, h5, h6, li, a, button, label, span, input, textarea'
-    );
-
+    // Escalar textos normales
     textElements.forEach(el => {
-        const baseSize = parseFloat(window.getComputedStyle(el).fontSize);
-        el.style.fontSize = (baseSize / 1 * fontScale) + 'px';
+        const baseSize = parseFloat(el.dataset.baseFontSize);
+        el.style.fontSize = (baseSize * fontScale) + 'px';
+    });
+
+    // Escalar solo la fuente de los botones, sin tocar padding
+    buttonElements.forEach(btn => {
+        const baseSize = parseFloat(btn.dataset.baseFontSize);
+        btn.style.fontSize = (baseSize * fontScale) + 'px';
     });
 }
+
+
 
 function toggleContrast() { document.body.classList.toggle('high-contrast'); }
 
