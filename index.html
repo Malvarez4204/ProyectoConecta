@@ -331,10 +331,16 @@ function closeLogin() {
 }
 
 // --- ACCESIBILIDAD mejorada final ---
-let fontSize = 100;
+let fontScale = 1;
+
 function changeFontSize(n) {
-    fontSize += (n * 10);
-    document.body.style.fontSize = fontSize + "%";
+    fontScale += n * 0.1; // aumenta o disminuye 10%
+    if (fontScale < 0.5) fontScale = 0.5; // límite mínimo
+    if (fontScale > 2) fontScale = 2; // límite máximo
+
+    const main = document.getElementById('main-content');
+    main.style.transform = `scale(${fontScale})`;
+    main.style.transformOrigin = 'top left';
 }
 function toggleContrast() { document.body.classList.toggle('high-contrast'); }
 
