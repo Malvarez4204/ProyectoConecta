@@ -331,6 +331,7 @@ function closeLogin() {
 }
 
 // --- ACCESIBILIDAD mejorada final ---
+
 let fontScale = 1;
 
 function changeFontSize(n) {
@@ -338,13 +339,17 @@ function changeFontSize(n) {
     if (fontScale < 0.5) fontScale = 0.5; // límite mínimo
     if (fontScale > 2) fontScale = 2; // límite máximo
 
-    // Ajusta la fuente base del html (para rem)
-    document.documentElement.style.fontSize = `${fontScale * 100}%`;
+    // Selecciona todos los elementos de texto
+    const textElements = document.querySelectorAll(
+        'p, h1, h2, h3, h4, h5, h6, li, a, button, label, span, input, textarea'
+    );
 
-    // Escala todo el body como respaldo para textos con px fijos
-    document.body.style.transform = `scale(${fontScale})`;
-    document.body.style.transformOrigin = 'top left';
+    textElements.forEach(el => {
+        const baseSize = parseFloat(window.getComputedStyle(el).fontSize);
+        el.style.fontSize = (baseSize / 1 * fontScale) + 'px';
+    });
 }
+
 function toggleContrast() { document.body.classList.toggle('high-contrast'); }
 
 function toggleA11yMenu() {
